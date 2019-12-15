@@ -280,6 +280,7 @@ public class OpenGlES20Android extends Activity implements GLSurfaceView.Rendere
                 stringBuilder.append(string);
                 stringBuilder.append('\n');
             }
+            //a
         }
         catch(IOException e)
         {

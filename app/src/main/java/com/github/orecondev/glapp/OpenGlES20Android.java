@@ -26,6 +26,7 @@ import java.nio.FloatBuffer;
 
 import android.opengl.Matrix;
 import android.view.Display;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -36,6 +37,7 @@ public class OpenGlES20Android extends Activity implements GLSurfaceView.Rendere
     private GLSurfaceView SurfaceView;
     double allWidth;
     double allHeight;
+    TextView tv;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -53,7 +55,7 @@ public class OpenGlES20Android extends Activity implements GLSurfaceView.Rendere
         //aaa
 
 
-        TextView tv = new TextView(this);
+        tv = new TextView(this);
         tv.setText(allHeight+"");
         tv.setTextColor(Color.parseColor("#ff00ff"));
         baseLay.addView(tv);
@@ -67,7 +69,14 @@ public class OpenGlES20Android extends Activity implements GLSurfaceView.Rendere
         baseLay.addView(tvv);
 
 
-        Button rbutton = new Button(this);
+        final Button rbutton = new Button(this);
+        rbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                rbuttonClick();
+            }
+        });
+
         rbutton.setText("right");
         rbutton.setGravity(2);
         rbutton.setTranslationX((int)(0.8*allWidth));
@@ -104,6 +113,13 @@ public class OpenGlES20Android extends Activity implements GLSurfaceView.Rendere
     private float[] ModelView = new float[16];
     private float[] Projection = new float[16];
     private float[] ModelViewProjection = new float[16];
+
+    private float[]  idou ={
+            1,0,0,0.1f,
+            0,1,0,0,
+            0,0,1,0,
+            0,0,0,1,
+    };
 
     private static float Angle = 0.0f;
 
@@ -164,10 +180,11 @@ public class OpenGlES20Android extends Activity implements GLSurfaceView.Rendere
 
         VertexBufferObject = CreateVertexBufferObject(data);
 
-        Matrix.setLookAtM(View, 0, 0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+        Matrix.setLookAtM(View, 0, 0.0f, 0.0f, 10.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         GLES20.glEnable(GLES20.GL_CULL_FACE);
+        Matrix.setIdentityM(Model, 0);
     }
 
     @Override
@@ -175,9 +192,13 @@ public class OpenGlES20Android extends Activity implements GLSurfaceView.Rendere
     {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        Matrix.setIdentityM(Model, 0);
-        Matrix.rotateM(Model, 0, Angle, 0.0f, 1.0f, 0.0f);
-        Matrix.rotateM(Model, 0, Angle, 1.0f, 0.0f, 0.0f);
+
+        //Matrix.rotateM(Model, 0, Angle, 0.0f, 1.0f, 0.0f);
+        //Matrix.rotateM(Model, 0, Angle, 1.0f, 0.0f, 0.0f);
+        float[] aa = {0,0,0};
+        //Matrix.transpose(Model,0,idou,0);
+        Matrix.translateM(Model,0,0,0,0);
+        //Matrix.multiplyMM(Model, 0, Model, 0, idou, 0);
 
         Angle += 0.25f;
 
@@ -280,7 +301,7 @@ public class OpenGlES20Android extends Activity implements GLSurfaceView.Rendere
                 stringBuilder.append(string);
                 stringBuilder.append('\n');
             }
-            //a
+            //aaa
         }
         catch(IOException e)
         {
@@ -386,7 +407,19 @@ public class OpenGlES20Android extends Activity implements GLSurfaceView.Rendere
         display.getSize(point);
         return point;
     }
+
+    public boolean rbuttonClick(){
+        Matrix.translateM(Model,0,0.1f,0.1f,0);
+
+        tv.setText("おされたー");
+        return true;
+
+    }
+
+
 }
+
+
 
 /*
 
